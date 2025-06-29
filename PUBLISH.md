@@ -100,9 +100,20 @@ vsce login YOUR-PUBLISHER-NAME
 - [ ] .gitignore file appropriate
 - [ ] Extension compiles (`pnpm run compile`)
 - [ ] Tested (`F5` with Extension Development Host)
-- [ ] Icon file added (resources/icon.png) - optional
+- [ ] Icon file added (128x128 PNG at `resources/icon.png`) - optional but recommended
 - [ ] GitHub repository created
 - [ ] Git remote connection established
+
+### Icon Requirements (Optional but Recommended)
+- **Format**: PNG
+- **Size**: 128x128 pixels exactly
+- **Location**: `resources/icon.png`
+- **Design**: Simple, high contrast, recognizable at small sizes
+- **Colors**: Use PNPM orange (#f69220) for brand consistency
+
+See `ICON_REQUIREMENTS.md` for detailed icon creation guide.
+
+**Note**: You can publish without an icon (VSCode will use default), but a custom icon improves discoverability and professionalism.
 
 ## 🔄 Publishing Updates
 

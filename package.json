@@ -2,7 +2,7 @@
   "name": "pnpm-manager",
   "displayName": "PNPM Manager",
   "description": "Manage PNPM packages and scripts directly from VSCode with custom commands and auto-start features",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publisher": "mrnasil",
   "author": {
     "name": "Faruk ARIGUN",
@@ -35,9 +35,10 @@
     "workflow"
   ],
   "galleryBanner": {
-    "color": "#f69220",
+    "color": "#181818",
     "theme": "dark"
   },
+  "icon": "resources/icon.png",
   "activationEvents": [
     "onStartupFinished"
   ],
@@ -98,7 +99,7 @@
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "package": "vsce package",
-    "install:extension": "code --install-extension pnpm-manager-1.0.0.vsix",
+    "install:extension": "code --install-extension pnpm-manager-1.0.1.vsix",
     "publish": "vsce publish"
   },
   "devDependencies": {
