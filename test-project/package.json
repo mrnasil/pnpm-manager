@@ -1,0 +1,18 @@
+{
+  "name": "test-project",
+  "version": "1.0.0",
+  "description": "Test project for PNPM Manager extension",
+  "scripts": {
+    "dev": "echo 'Running dev server'",
+    "build": "echo 'Building project'",
+    "test": "echo 'Running tests'",
+    "lint": "echo 'Linting code'"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "typescript": "^4.9.0"
+  }
+}

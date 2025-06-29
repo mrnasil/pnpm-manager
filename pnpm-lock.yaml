@@ -1,0 +1,32 @@
+lockfileVersion: '6.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+devDependencies:
+  '@types/node':
+    specifier: 16.x
+    version: 16.18.68
+  '@types/vscode':
+    specifier: ^1.74.0
+    version: 1.85.0
+  typescript:
+    specifier: ^4.9.4
+    version: 4.9.5
+
+packages:
+
+  /@types/node@16.18.68:
+    resolution: {integrity: sha512-vzrNlZaXSjpGGhOUb1yGHbQQU0HtwXho6qhAWNB5ryT2bUqYrVries7shWD+xgYhQJfZRZuQjXuMJ8zEKpGPzA==}
+    dev: true
+
+  /@types/vscode@1.85.0:
+    resolution: {integrity: sha512-CF/RBon/GXwdfmnjZghZlRlNWHr0zTNqMjoxTZC4W7LDQBKj0HLk+7dF1H/pP2s8HUTHLEOm2tEfDdLWBw5gA==}
+    dev: true
+
+  /typescript@4.9.5:
+    resolution: {integrity: sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==}
+    engines: {node: '>=4.2.0'}
+    hasBin: true
+    dev: true

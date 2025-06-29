@@ -1,0 +1,109 @@
+{
+  "name": "pnpm-manager",
+  "displayName": "PNPM Manager",
+  "description": "Manage PNPM packages and scripts directly from VSCode with custom commands and auto-start features",
+  "version": "1.0.0",
+  "publisher": "mrnasil",
+  "author": {
+    "name": "Faruk ARIGUN",
+    "email": "mail@farukarigun.com"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/mrnasil/pnpm-manager#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mrnasil/pnpm-manager.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mrnasil/pnpm-manager/issues"
+  },
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Other",
+    "Extension Packs"
+  ],
+  "keywords": [
+    "pnpm",
+    "package manager",
+    "npm",
+    "node",
+    "dependencies",
+    "scripts",
+    "automation",
+    "workflow"
+  ],
+  "galleryBanner": {
+    "color": "#f69220",
+    "theme": "dark"
+  },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "pnpmManager.openMenu",
+        "title": "Open PNPM Manager",
+        "category": "PNPM Manager"
+      },
+      {
+        "command": "pnpmManager.install",
+        "title": "Install Dependencies",
+        "category": "PNPM Manager"
+      },
+      {
+        "command": "pnpmManager.addPackage",
+        "title": "Add Package",
+        "category": "PNPM Manager"
+      },
+      {
+        "command": "pnpmManager.removePackage",
+        "title": "Remove Package",
+        "category": "PNPM Manager"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "pnpmManager.openMenu",
+          "when": "resourceFilename == package.json",
+          "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "pnpmManager.openMenu",
+          "when": "workspaceFolderCount > 0"
+        },
+        {
+          "command": "pnpmManager.install",
+          "when": "workspaceFolderCount > 0"
+        },
+        {
+          "command": "pnpmManager.addPackage",
+          "when": "workspaceFolderCount > 0"
+        },
+        {
+          "command": "pnpmManager.removePackage",
+          "when": "workspaceFolderCount > 0"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "pnpm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package",
+    "install:extension": "code --install-extension pnpm-manager-1.0.0.vsix",
+    "publish": "vsce publish"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@types/node": "16.x",
+    "typescript": "^4.9.4"
+  }
+}
