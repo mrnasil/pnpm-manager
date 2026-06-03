@@ -2,7 +2,24 @@
 
 All notable changes to the "PNPM Manager" extension will be documented in this file.
 
-## [1.0.3] - 2026-06-03
+## [1.0.4] - 2026-06-03
+
+### Added
+- 🌐 **Multi-Root Workspace Support**: Full support for VSCode multi-root workspaces with intelligent project resolution.
+- 📦 **PNPM Workspace Support**: Automatic detection and handling of `pnpm-workspace.yaml` for monorepo environments.
+- 🔄 **Smart Directory Traversal**: Commands automatically find the nearest `package.json` or `pnpm-workspace.yaml` when triggered from nested files.
+- 🚀 **Automated CI/CD**: One-command GitHub Actions release to VSCode Marketplace, Open VSX, and GitHub Releases.
+- 📦 **.vscodeignore**: Optimized extension package size by excluding development-only files.
+
+### Fixed
+- 🔄 **Auto-Install Workspace Support**: Ensured auto-install and auto-start features correctly recognize `pnpm-workspace.yaml` roots.
+- 🛠️ **TypeScript 6.x Compatibility**: Updated `tsconfig.json` to use `Node16` module resolution and fixed type definitions.
+- 🐛 **Context-Aware Commands**: Fixed issue where commands would fail to locate the correct project root in complex workspace setups.
+- ⚡ **CI/CD Pipeline**: Fixed pnpm v11 compatibility, build script approvals, and Marketplace publishing validation.
+
+---
+
+## [1.0.3] - 2026-06-03 (Unreleased)
 
 ### Fixed
 - 🔄 **Auto-Install Workspace Support**: Ensured auto-install and auto-start features correctly recognize `pnpm-workspace.yaml` roots, preventing missed executions in monorepo setups.

@@ -2,7 +2,7 @@
   "name": "pnpm-manager",
   "displayName": "PNPM Manager",
   "description": "Manage PNPM packages and scripts directly from VSCode with custom commands and auto-start features",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "publisher": "mrnasil",
   "author": {
     "name": "Faruk ARIGUN",
