@@ -1,0 +1,64 @@
+# PNPM Manager Extension Configuration
+
+## Purpose
+This rule enables Cursor to help users set up `pnpmconfig.json` for the PNPM Manager VSCode extension.
+
+## When to Apply
+- User asks to configure PNPM Manager
+- User wants to set up auto-start scripts or custom pnpm commands
+- User asks about `pnpmconfig.json`
+
+## Configuration Schema
+
+```json
+{
+  "autoStart": {
+    "enabled": true,
+    "scripts": ["dev", "dev && test"]
+  },
+  "customCommands": [
+    {
+      "name": "Full Build",
+      "command": "build && test && lint",
+      "description": "Complete build process with tests and linting",
+      "autoStart": true
+    }
+  ],
+  "settings": {
+    "showNotifications": true,
+    "autoInstallOnOpen": false
+  }
+}
+```
+
+## Instructions
+
+1. **Read existing `package.json`**: Discover available scripts from the `scripts` field.
+2. **Generate `pnpmconfig.json`**: Create at the project root (same directory as `package.json`).
+3. **Script selection**: For `autoStart.scripts`, suggest commonly used development scripts like `dev`, `watch`, `build`.
+4. **Validation**: Ensure JSON matches the schema. All fields are optional except those explicitly requested by the user.
+5. **Complex commands**: `command` and `scripts` values support `&&` chaining (e.g., `"build && test && lint"`).
+6. **PNPM only**: All commands use `pnpm` prefix automatically; only pnpm works.
+
+## Example: User says "Set up auto-start for dev and test"
+```json
+{
+  "autoStart": {
+    "enabled": true,
+    "scripts": ["dev", "test"]
+  }
+}
+```
+
+## Example: User says "Add custom lint-and-build command"
+```json
+{
+  "customCommands": [
+    {
+      "name": "Lint & Build",
+      "command": "lint && build",
+      "description": "Run linter then build project"
+    }
+  ]
+}
+```
