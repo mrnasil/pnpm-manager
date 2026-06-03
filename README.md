@@ -1,62 +1,60 @@
 # PNPM Manager
 
- 
-🔗 [VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=mrnasil.pnpm-manager) · [Open VSX](https://open-vsx.org/extension/mrnasil/pnpm-manager)
+[VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=mrnasil.pnpm-manager) ·
+[Open VSX](https://open-vsx.org/extension/mrnasil/pnpm-manager)
 
-A VSCode extension that simplifies PNPM package management by reading your package.json and providing one-click PNPM commands.
+One-click pnpm package management from VSCode. Reads your `package.json`, provides a quick-pick menu for install, add, remove, and script execution.
 
-## ✨ Features
+## Features
 
-- 📦 **Install Dependencies**: Run `pnpm install` with a single click
-- ➕ **Add Packages**: Add new packages with `pnpm add` (production/dev selection)
-- ➖ **Remove Packages**: Remove packages with `pnpm remove` from existing dependencies
-- 🚀 **Run Scripts**: Execute package.json scripts with `pnpm run`
-- 🎯 **Multiple Access Points**: Status bar button, command palette, and context menu
-- ⚙️ **Custom Commands**: Define custom commands via `pnpmconfig.json`
-- 🔄 **Auto-Start**: Automatically run scripts when VSCode opens
-- 🔧 **Advanced Configuration**: Notifications, auto-install, and more
-- 🌐 **Multi-Root Workspace Support**: Full support for VSCode multi-root workspaces with intelligent project resolution
-- 📦 **PNPM Workspace Support**: Automatic detection and handling of `pnpm-workspace.yaml` for monorepo environments
-- 🔄 **Smart Directory Traversal**: Commands automatically find the nearest `package.json` or `pnpm-workspace.yaml` when triggered from nested files
+- **Install, Add, Remove** — pnpm dependency management without leaving the editor
+- **Script Runner** — executes any `package.json` script with `pnpm run`
+- **Access Points** — status bar button, command palette (`Ctrl+Shift+P`), right-click context menu on `package.json`
+- **Custom Commands** — define your own pnpm workflows via `pnpmconfig.json`
+- **Auto-Start** — run scripts automatically when a workspace opens
+- **Multi-Root Workspaces** — asks which project to target when multiple `package.json` files exist
+- **Monorepo Support** — detects `pnpm-workspace.yaml` and treats it as a valid project root
+- **Directory Traversal** — when triggered from a nested file, walks up to find the nearest config
 
-## 🚀 Usage
+## Usage
 
 ### Status Bar
-Click the "PNPM" button in the status bar to open the PNPM Manager menu.
+
+Click **PNPM** in the status bar to open the command menu.
 
 ### Command Palette
-Press `Ctrl+Shift+P` (or `Cmd+Shift+P` on Mac) and search for:
+
+`Ctrl+Shift+P` (macOS: `Cmd+Shift+P`), then type:
+
 - `PNPM Manager: Open PNPM Manager`
 - `PNPM Manager: Install Dependencies`
 - `PNPM Manager: Add Package`
 - `PNPM Manager: Remove Package`
 
 ### Context Menu
-Right-click on any `package.json` file in Explorer and select "Open PNPM Manager".
 
-## ⚙️ pnpmconfig.json Configuration
+Right-click any `package.json` in Explorer → **Open PNPM Manager**.
 
-Create a `pnpmconfig.json` file in your project root to customize the extension behavior:
+## Configuration
+
+Place a `pnpmconfig.json` in your project root (next to `package.json`):
 
 ```json
 {
   "autoStart": {
     "enabled": true,
-    "scripts": [
-      "dev",
-      "dev && test"
-    ]
+    "scripts": ["dev", "dev && test"]
   },
   "customCommands": [
     {
       "name": "Full Build",
       "command": "build && test && lint",
-      "description": "Complete build process with tests and linting"
+      "description": "Run build, tests, and linter"
     },
     {
       "name": "Dev Server",
       "command": "dev",
-      "description": "Start development server",
+      "description": "Start dev server",
       "autoStart": true
     }
   ],
@@ -67,104 +65,62 @@ Create a `pnpmconfig.json` file in your project root to customize the extension 
 }
 ```
 
-### Configuration Options
+### Fields
 
-- **autoStart.enabled**: Enable automatic script execution when VSCode opens
-- **autoStart.scripts**: List of scripts to run automatically
-- **customCommands**: Define custom PNPM commands
-  - **name**: Command name (displayed in menu)
-  - **command**: PNPM command to execute
-  - **description**: Command description
-  - **autoStart**: Whether this command should run automatically
-- **settings.showNotifications**: Control notification display
-- **settings.autoInstallOnOpen**: Automatically run `pnpm install` when project opens
+| Field | Type | Description |
+|---|---|---|
+| `autoStart.enabled` | boolean | Enable/disable auto-start |
+| `autoStart.scripts` | string[] | Scripts to run on workspace open |
+| `customCommands[].name` | string | Label shown in the quick-pick menu |
+| `customCommands[].command` | string | pnpm command (supports `&&` chains) |
+| `customCommands[].description` | string | Optional detail shown in menu |
+| `customCommands[].autoStart` | boolean | Whether this command runs on startup |
+| `settings.showNotifications` | boolean | Show info popups (default `true`) |
+| `settings.autoInstallOnOpen` | boolean | Run `pnpm install` on open (default `false`) |
 
-### Status Bar Indicator
+When a `pnpmconfig.json` is detected, the status bar shows a gear icon.
 
-When pnpmconfig.json exists, a ⚙️ gear icon appears next to PNPM in the status bar.
+### AI Agent Support
 
-### 🤖 AI Agent Support
+Repository includes instructions for AI coding tools to generate valid `pnpmconfig.json` configurations automatically:
 
-This repository includes instructions for AI coding agents to automatically generate and manage your `pnpmconfig.json` configuration:
-
-| AI Tool | How It Works |
+| Tool | Mechanism |
 |---|---|
-| **OpenCode** | Load the skill: `/pnpm-manager` or `skill("pnpm-manager")` |
-| **Claude** | Reads `CLAUDE.md` automatically from the project root |
-| **Cursor** | Reads `.cursor/rules/pnpm-manager.mdc` automatically |
+| OpenCode | `skill("pnpm-manager")` or `/pnpm-manager` |
+| Claude | reads `CLAUDE.md` from repo root |
+| Cursor | reads `.cursor/rules/pnpm-manager.mdc` |
 
-Simply ask your AI agent: *"Generate a pnpmconfig.json with auto-start for my dev and test scripts"* and the agent will read your `package.json`, create a valid configuration, and place it in your project root.
+Example prompt: *"Generate a pnpmconfig.json that auto-starts dev and test on open."*
 
-## 📋 Requirements
+## Requirements
 
-- VSCode 1.74.0 or higher
-- PNPM installed on your system
-- A workspace with a `package.json` or `pnpm-workspace.yaml` file
+- VSCode `>=1.74.0`
+- pnpm installed and in `PATH`
+- A workspace with `package.json` or `pnpm-workspace.yaml`
 
-## 📦 Installation
+## Installation
 
-### From Marketplace
-1. Install the extension from VSCode marketplace
-2. Open a project with a `package.json` file
-3. The PNPM button will appear in the status bar
+**Marketplace:** Install from the [VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=mrnasil.pnpm-manager) or [Open VSX](https://open-vsx.org/extension/mrnasil/pnpm-manager).
 
-### Manual Installation
+**Manual:**
 ```bash
-# Download the extension and navigate to folder
 cd pnpm-manager
-
-# Install dependencies (PNPM only)
 pnpm install
-
-# Compile TypeScript code
 pnpm run compile
-
-# Package the extension
 pnpm run package
-
-# Install to VSCode
 pnpm run install:extension
 ```
 
-## 🛠️ Development
+## Development
 
-### Development Environment Setup
-
-**Requirements:**
-- Node.js (v16 or higher)
-- PNPM (npm or yarn not supported)
-- VSCode (v1.74.0 or higher)
-
-**Setup:**
 ```bash
-# Install dependencies
-pnpm install
-
-# Compile TypeScript code
-pnpm run compile
-
-# Watch for changes
-pnpm run watch
+pnpm install          # dependencies
+pnpm run compile      # build
+pnpm run watch        # build on change
 ```
 
-### Testing
-1. Press `F5` to open Extension Development Host window
-2. Open the `test-project` folder or use your own project
-3. Test the extension features
+Press `F5` to launch the Extension Development Host. Use the `test-project/` directory to verify functionality.
 
-### Packaging and Distribution
-```bash
-# Package the extension
-pnpm run package
-
-# Install locally
-pnpm run install:extension
-```
-
-## 🎯 PNPM Only
-
-This extension exclusively supports the PNPM package manager. NPM and Yarn are not supported. The extension itself is also developed entirely with PNPM.
-
-## 📄 License
+## License
 
 MIT
