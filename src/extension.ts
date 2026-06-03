@@ -64,7 +64,7 @@ async function handleAutoInstall() {
 
         for (const folder of workspaceFolders) {
             const targetRoot = folder.uri.fsPath;
-            if (!packageManager.hasPackageJson(targetRoot)) {
+            if (!packageManager.hasPnpmProject(targetRoot)) {
                 continue;
             }
 
