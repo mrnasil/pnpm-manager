@@ -2,6 +2,13 @@
 
 All notable changes to the "PNPM Manager" extension will be documented in this file.
 
+## [1.0.3] - 2026-06-03
+
+### Fixed
+- 🔄 **Auto-Install Workspace Support**: Ensured auto-install and auto-start features correctly recognize `pnpm-workspace.yaml` roots, preventing missed executions in monorepo setups.
+
+---
+
 ## [1.0.1] - 2026-06-03
 
 ### Added
