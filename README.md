@@ -83,6 +83,18 @@ Create a `pnpmconfig.json` file in your project root to customize the extension 
 
 When pnpmconfig.json exists, a ⚙️ gear icon appears next to PNPM in the status bar.
 
+### 🤖 AI Agent Support
+
+This repository includes instructions for AI coding agents to automatically generate and manage your `pnpmconfig.json` configuration:
+
+| AI Tool | How It Works |
+|---|---|
+| **OpenCode** | Load the skill: `/pnpm-manager` or `skill("pnpm-manager")` |
+| **Claude** | Reads `CLAUDE.md` automatically from the project root |
+| **Cursor** | Reads `.cursor/rules/pnpm-manager.mdc` automatically |
+
+Simply ask your AI agent: *"Generate a pnpmconfig.json with auto-start for my dev and test scripts"* and the agent will read your `package.json`, create a valid configuration, and place it in your project root.
+
 ## 📋 Requirements
 
 - VSCode 1.74.0 or higher
