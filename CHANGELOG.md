@@ -2,6 +2,15 @@
 
 All notable changes to the "PNPM Manager" extension will be documented in this file.
 
+## [1.0.5] - 2026-06-03
+
+### Changed
+- 📝 **README Overhaul**: Rewritten with cleaner, professional tone and improved structure.
+- 🤖 **AI Agent Documentation**: Added dedicated AI agent support section (Claude, Cursor, OpenCode).
+- 🏷️ **Marketplace Badges**: Updated with stable VSCode Marketplace and Open VSX links.
+
+---
+
 ## [1.0.4] - 2026-06-03
 
 ### Added
