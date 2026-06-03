@@ -26,7 +26,7 @@ jobs:
           version: latest
 
       - name: Install Dependencies
-        run: pnpm install --allow-scripts=@vscode/vsce-sign,keytar
+        run: pnpm install --frozen-lockfile
 
       - name: Compile Extension
         run: pnpm run compile
