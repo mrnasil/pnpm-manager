@@ -1,0 +1,8 @@
+.vscode/
+.github/
+src/
+test-project/
+tsconfig.json
+pnpm-lock.yaml
+PUBLISH.md
+.npmrc
