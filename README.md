@@ -1,7 +1,7 @@
 # PNPM Manager
 
-[![VSCode Marketplace](https://img.shields.io/visual-studio-marketplace/v/mrnasil.pnpm-manager?label=VSCode%20Marketplace)](https://marketplace.visualstudio.com/items?itemName=mrnasil.pnpm-manager)
-[![Open VSX](https://img.shields.io/open-vsx/v/mrnasil/pnpm-manager?label=Open%20VSX)](https://open-vsx.org/extension/mrnasil/pnpm-manager)
+[![VSCode Marketplace](https://img.shields.io/visual-studio-marketplace/v/mrnasil.pnpm-manager?label=VSCode%20Marketplace&color=blue)](https://marketplace.visualstudio.com/items?itemName=mrnasil.pnpm-manager)
+[![Open VSX](https://img.shields.io/open-vsx/v/mrnasil/pnpm-manager?label=Open%20VSX&color=blue)](https://open-vsx.org/extension/mrnasil/pnpm-manager)
 
 A VSCode extension that simplifies PNPM package management by reading your package.json and providing one-click PNPM commands.
 
