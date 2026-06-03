@@ -2,6 +2,19 @@
 
 All notable changes to the "PNPM Manager" extension will be documented in this file.
 
+## [1.0.1] - 2026-06-03
+
+### Added
+- 🌐 **Multi-Root Workspace Support**: Full support for VSCode multi-root workspaces with intelligent project resolution.
+- 📦 **PNPM Workspace Support**: Automatic detection and handling of `pnpm-workspace.yaml` for monorepo environments.
+- 🔄 **Smart Directory Traversal**: Commands now automatically find the nearest `package.json` or `pnpm-workspace.yaml` when triggered from nested files.
+
+### Fixed
+- 🛠️ **TypeScript 6.x Compatibility**: Updated `tsconfig.json` to use `Node16` module resolution and fixed type definitions for modern Node.js environments.
+- 🐛 **Context-Aware Commands**: Fixed issue where commands would fail to locate the correct project root in complex workspace setups.
+
+---
+
 ## [1.0.0] - 2025-06-29
 
 ### Added

@@ -9,9 +9,12 @@ A VSCode extension that simplifies PNPM package management by reading your packa
 - ➖ **Remove Packages**: Remove packages with `pnpm remove` from existing dependencies
 - 🚀 **Run Scripts**: Execute package.json scripts with `pnpm run`
 - 🎯 **Multiple Access Points**: Status bar button, command palette, and context menu
-- ⚙️ **Custom Commands**: Define custom commands via pnpmconfig.json
+- ⚙️ **Custom Commands**: Define custom commands via `pnpmconfig.json`
 - 🔄 **Auto-Start**: Automatically run scripts when VSCode opens
 - 🔧 **Advanced Configuration**: Notifications, auto-install, and more
+- 🌐 **Multi-Root Workspace Support**: Full support for VSCode multi-root workspaces with intelligent project resolution
+- 📦 **PNPM Workspace Support**: Automatic detection and handling of `pnpm-workspace.yaml` for monorepo environments
+- 🔄 **Smart Directory Traversal**: Commands automatically find the nearest `package.json` or `pnpm-workspace.yaml` when triggered from nested files
 
 ## 🚀 Usage
 
@@ -81,7 +84,7 @@ When pnpmconfig.json exists, a ⚙️ gear icon appears next to PNPM in the stat
 
 - VSCode 1.74.0 or higher
 - PNPM installed on your system
-- A workspace with a `package.json` file
+- A workspace with a `package.json` or `pnpm-workspace.yaml` file
 
 ## 📦 Installation
 

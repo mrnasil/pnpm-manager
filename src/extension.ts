@@ -17,10 +17,10 @@ export function activate(context: vscode.ExtensionContext) {
 
     // Register commands
     const disposables = [
-        vscode.commands.registerCommand('pnpmManager.openMenu', () => commandManager.openMenu()),
-        vscode.commands.registerCommand('pnpmManager.install', () => commandManager.installDependencies()),
-        vscode.commands.registerCommand('pnpmManager.addPackage', () => commandManager.addPackage()),
-        vscode.commands.registerCommand('pnpmManager.removePackage', () => commandManager.removePackage()),
+        vscode.commands.registerCommand('pnpmManager.openMenu', (uri?: vscode.Uri) => commandManager.openMenu(uri)),
+        vscode.commands.registerCommand('pnpmManager.install', (uri?: vscode.Uri) => commandManager.installDependencies(uri)),
+        vscode.commands.registerCommand('pnpmManager.addPackage', (uri?: vscode.Uri) => commandManager.addPackage(uri)),
+        vscode.commands.registerCommand('pnpmManager.removePackage', (uri?: vscode.Uri) => commandManager.removePackage(uri)),
     ];
 
     // Add status bar item
@@ -47,7 +47,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 async function handleAutoStart() {
     try {
-        if (packageManager && packageManager.hasPackageJson() && packageManager.hasPnpmConfig()) {
+        if (packageManager && commandManager) {
             await commandManager.runAutoStartScripts();
         }
     } catch (error) {
@@ -57,14 +57,24 @@ async function handleAutoStart() {
 
 async function handleAutoInstall() {
     try {
-        if (packageManager && packageManager.hasPackageJson()) {
-            const shouldAutoInstall = await packageManager.shouldAutoInstallOnOpen();
+        const workspaceFolders = vscode.workspace.workspaceFolders;
+        if (!workspaceFolders) {
+            return;
+        }
+
+        for (const folder of workspaceFolders) {
+            const targetRoot = folder.uri.fsPath;
+            if (!packageManager.hasPackageJson(targetRoot)) {
+                continue;
+            }
+
+            const shouldAutoInstall = await packageManager.shouldAutoInstallOnOpen(targetRoot);
             if (shouldAutoInstall) {
-                const shouldShowNotifications = await packageManager.shouldShowNotifications();
+                const shouldShowNotifications = await packageManager.shouldShowNotifications(targetRoot);
                 if (shouldShowNotifications) {
-                    vscode.window.showInformationMessage('Auto-installing dependencies...');
+                    vscode.window.showInformationMessage(`Auto-installing dependencies in ${folder.name}...`);
                 }
-                await commandManager.installDependencies();
+                await commandManager.installDependencies(folder.uri);
             }
         }
     } catch (error) {

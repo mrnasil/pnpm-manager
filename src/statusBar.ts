@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import * as fs from 'fs';
-import * as path from 'path';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
 export class StatusBarManager implements vscode.Disposable {
     private statusBarItem: vscode.StatusBarItem;
@@ -25,16 +25,30 @@ export class StatusBarManager implements vscode.Disposable {
             return;
         }
 
-        const workspaceRoot = workspaceFolders[0].uri.fsPath;
-        const pnpmConfigPath = path.join(workspaceRoot, 'pnpmconfig.json');
+        const validFolder = workspaceFolders.find(folder => {
+            const root = folder.uri.fsPath;
+            const hasPkg = fs.existsSync(path.join(root, 'package.json'));
+            const hasWorkspace = fs.existsSync(path.join(root, 'pnpm-workspace.yaml'));
+            return hasPkg || hasWorkspace;
+        });
+
+        if (!validFolder) {
+            this.statusBarItem.text = '$(package) PNPM';
+            this.statusBarItem.tooltip = 'PNPM Manager - No package.json or pnpm-workspace.yaml found';
+            return;
+        }
+
+        const pnpmConfigPath = path.join(validFolder.uri.fsPath, 'pnpmconfig.json');
         const hasPnpmConfig = fs.existsSync(pnpmConfigPath);
+        const isWorkspace = fs.existsSync(path.join(validFolder.uri.fsPath, 'pnpm-workspace.yaml'));
+        const projectType = isWorkspace ? 'Workspace' : 'Project';
 
         if (hasPnpmConfig) {
             this.statusBarItem.text = '$(package) PNPM $(gear)';
-            this.statusBarItem.tooltip = 'PNPM Manager - Custom config detected\nClick to open menu';
+            this.statusBarItem.tooltip = `PNPM Manager - Custom config detected in ${validFolder.name} (${projectType})\nClick to open menu`;
         } else {
             this.statusBarItem.text = '$(package) PNPM';
-            this.statusBarItem.tooltip = 'PNPM Manager - Click to open menu';
+            this.statusBarItem.tooltip = `PNPM Manager - ${validFolder.name} (${projectType})\nClick to open menu`;
         }
     }
 

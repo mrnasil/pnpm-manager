@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import * as fs from 'fs';
-import * as path from 'path';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
 export interface PackageJson {
     name?: string;
@@ -29,29 +29,60 @@ export interface PnpmConfig {
 }
 
 export class PackageManager {
-    private workspaceRoot: string | undefined;
+    public async getTargetRoot(uri?: vscode.Uri): Promise<string | undefined> {
+        if (uri) {
+            try {
+                const stat = await vscode.workspace.fs.stat(uri);
+                let currentDir = stat.type === vscode.FileType.Directory ? uri.fsPath : path.dirname(uri.fsPath);
+                
+                // Traverse up the directory tree to locate the nearest package.json or pnpm-workspace.yaml
+                while (currentDir) {
+                    if (this.hasPackageJson(currentDir) || this.hasPnpmWorkspace(currentDir)) {
+                        return currentDir;
+                    }
+                    const parentDir = path.dirname(currentDir);
+                    if (parentDir === currentDir) {
+                        break; // File system root reached
+                    }
+                    currentDir = parentDir;
+                }
+            } catch {
+                return undefined;
+            }
+        }
 
-    constructor() {
-        this.updateWorkspaceRoot();
-    }
-
-    private updateWorkspaceRoot(): void {
         const workspaceFolders = vscode.workspace.workspaceFolders;
-        this.workspaceRoot = workspaceFolders && workspaceFolders.length > 0 
-            ? workspaceFolders[0].uri.fsPath 
-            : undefined;
-    }
-
-    public getPackageJsonPath(): string | undefined {
-        if (!this.workspaceRoot) {
+        if (!workspaceFolders || workspaceFolders.length === 0) {
             return undefined;
         }
-        return path.join(this.workspaceRoot, 'package.json');
+
+        const validFolders = workspaceFolders.filter(folder => {
+            const root = folder.uri.fsPath;
+            return this.hasPackageJson(root) || this.hasPnpmWorkspace(root);
+        });
+
+        if (validFolders.length === 0) {
+            return undefined;
+        }
+
+        if (validFolders.length === 1) {
+            return validFolders[0].uri.fsPath;
+        }
+
+        const selected = await vscode.window.showWorkspaceFolderPick({
+            placeHolder: 'Select the project to manage'
+        });
+        
+        return selected ? selected.uri.fsPath : undefined;
     }
 
-    public async readPackageJson(): Promise<PackageJson | undefined> {
-        const packageJsonPath = this.getPackageJsonPath();
-        if (!packageJsonPath || !fs.existsSync(packageJsonPath)) {
+    public getPackageJsonPath(targetRoot: string): string {
+        return path.join(targetRoot, 'package.json');
+    }
+
+    public async readPackageJson(targetRoot: string): Promise<PackageJson | undefined> {
+        const packageJsonPath = this.getPackageJsonPath(targetRoot);
+        if (!fs.existsSync(packageJsonPath)) {
             return undefined;
         }
 
@@ -64,13 +95,13 @@ export class PackageManager {
         }
     }
 
-    public async getScripts(): Promise<{ [key: string]: string }> {
-        const packageJson = await this.readPackageJson();
+    public async getScripts(targetRoot: string): Promise<{ [key: string]: string }> {
+        const packageJson = await this.readPackageJson(targetRoot);
         return packageJson?.scripts || {};
     }
 
-    public async getDependencies(): Promise<string[]> {
-        const packageJson = await this.readPackageJson();
+    public async getDependencies(targetRoot: string): Promise<string[]> {
+        const packageJson = await this.readPackageJson(targetRoot);
         const deps: string[] = [];
         
         if (packageJson?.dependencies) {
@@ -86,25 +117,27 @@ export class PackageManager {
         return deps.sort();
     }
 
-    public hasPackageJson(): boolean {
-        const packageJsonPath = this.getPackageJsonPath();
-        return packageJsonPath ? fs.existsSync(packageJsonPath) : false;
+    public hasPackageJson(targetRoot: string): boolean {
+        const packageJsonPath = this.getPackageJsonPath(targetRoot);
+        return fs.existsSync(packageJsonPath);
     }
 
-    public getWorkspaceRoot(): string | undefined {
-        return this.workspaceRoot;
+    public hasPnpmWorkspace(targetRoot: string): boolean {
+        const workspacePath = path.join(targetRoot, 'pnpm-workspace.yaml');
+        return fs.existsSync(workspacePath);
     }
 
-    public getPnpmConfigPath(): string | undefined {
-        if (!this.workspaceRoot) {
-            return undefined;
-        }
-        return path.join(this.workspaceRoot, 'pnpmconfig.json');
+    public hasPnpmProject(targetRoot: string): boolean {
+        return this.hasPackageJson(targetRoot) || this.hasPnpmWorkspace(targetRoot);
     }
 
-    public async readPnpmConfig(): Promise<PnpmConfig | undefined> {
-        const pnpmConfigPath = this.getPnpmConfigPath();
-        if (!pnpmConfigPath || !fs.existsSync(pnpmConfigPath)) {
+    public getPnpmConfigPath(targetRoot: string): string {
+        return path.join(targetRoot, 'pnpmconfig.json');
+    }
+
+    public async readPnpmConfig(targetRoot: string): Promise<PnpmConfig | undefined> {
+        const pnpmConfigPath = this.getPnpmConfigPath(targetRoot);
+        if (!fs.existsSync(pnpmConfigPath)) {
             return undefined;
         }
 
@@ -117,31 +150,31 @@ export class PackageManager {
         }
     }
 
-    public hasPnpmConfig(): boolean {
-        const pnpmConfigPath = this.getPnpmConfigPath();
-        return pnpmConfigPath ? fs.existsSync(pnpmConfigPath) : false;
+    public hasPnpmConfig(targetRoot: string): boolean {
+        const pnpmConfigPath = this.getPnpmConfigPath(targetRoot);
+        return fs.existsSync(pnpmConfigPath);
     }
 
-    public async getCustomCommands(): Promise<Array<{name: string, command: string, description?: string, autoStart?: boolean}>> {
-        const pnpmConfig = await this.readPnpmConfig();
+    public async getCustomCommands(targetRoot: string): Promise<Array<{name: string, command: string, description?: string, autoStart?: boolean}>> {
+        const pnpmConfig = await this.readPnpmConfig(targetRoot);
         return pnpmConfig?.customCommands || [];
     }
 
-    public async getAutoStartScripts(): Promise<string[]> {
-        const pnpmConfig = await this.readPnpmConfig();
+    public async getAutoStartScripts(targetRoot: string): Promise<string[]> {
+        const pnpmConfig = await this.readPnpmConfig(targetRoot);
         if (pnpmConfig?.autoStart?.enabled) {
             return pnpmConfig.autoStart.scripts || [];
         }
         return [];
     }
 
-    public async shouldShowNotifications(): Promise<boolean> {
-        const pnpmConfig = await this.readPnpmConfig();
+    public async shouldShowNotifications(targetRoot: string): Promise<boolean> {
+        const pnpmConfig = await this.readPnpmConfig(targetRoot);
         return pnpmConfig?.settings?.showNotifications ?? true;
     }
 
-    public async shouldAutoInstallOnOpen(): Promise<boolean> {
-        const pnpmConfig = await this.readPnpmConfig();
+    public async shouldAutoInstallOnOpen(targetRoot: string): Promise<boolean> {
+        const pnpmConfig = await this.readPnpmConfig(targetRoot);
         return pnpmConfig?.settings?.autoInstallOnOpen ?? false;
     }
 }
