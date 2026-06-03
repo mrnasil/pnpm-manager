@@ -102,12 +102,6 @@
     "install:extension": "code --install-extension pnpm-manager-1.0.1.vsix",
     "publish": "vsce publish"
   },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@vscode/vsce-sign",
-      "keytar"
-    ]
-  },
   "devDependencies": {
     "@types/node": "25.9.1",
     "@types/vscode": "^1.120.0",
